@@ -6,7 +6,7 @@
 
 // 중요한 변수 3가지다.
 let timeLeft = 25 * 60; // 초를 표현한다. 1500초
-let timerInterval; // Interval은 호출되면 첫번째에 설정한 함수를 두번째에 설정한 ms, 
+let timerInterval; // 명시적 전역변수가 있어야 resetTimer와 같은, 다른 함수안에서 Timeout객체를 clear할 수 있다.
 let isRunning = false; // 이 부분이 이해가 안갔단말이지. 아직. false는 플래그. 버튼을 누를때, 실행할지, 안할지를 결정하는 거야.
 
 // 앨리먼트가 보이도록 해야한다.
@@ -39,6 +39,8 @@ function minusSeconds() {
 // on/off를 하는 용도야.
 // isRunning이 없을 때는? 버튼 한번 누를 때마다 버튼의 행위를 기억해야해. 버튼이 0인지 1인지. 버튼을 눌러서 1이 되었다. 다음 누를때 1이었다면 0으로 바꾸고
 // 멈추게 하고, 다시 또 버튼을 누르면 1로 바꾸고 움직이게 하고.
+
+
 function startTimer() {
     if (!isRunning) {
         isRunning = true;
@@ -63,11 +65,13 @@ function startTimer() {
 // 초기화는 어떻게 할까?
 // 버튼을 추가하면 되겠지?
 // timerInterval을 어떻게 외부로 빼낼수 있을까?
+// 이미 timerInterval의 전역변수가 9line에 설정되어있기 때문에 resetTimer에서 clearInterval를 해도 문제없다.
 function resetTimer() {
     timeLeft = 25 * 60;
     startStopButton.textContent = 'Start';
     clearInterval(timerInterval);
     timerElement.textContent = "25:00";
+    isRunning = false;
 };
 
 
