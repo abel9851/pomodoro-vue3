@@ -12,6 +12,7 @@ let isRunning = false; // 이 부분이 이해가 안갔단말이지. 아직. fa
 // 앨리먼트가 보이도록 해야한다.
 const timerElement = document.getElementById('timer');
 const startStopButton = document.getElementById('startStopButton');
+const resetButton = document.getElementById('resetButton');
 
 // 어떻게 표시할건지를 함수로 정의한다.
 // 이 함수는 초가 마이너스가 되어야 움직일 필요가 있으니 거꾸로 말하자면 초를 변경하는 행위가 없다면
@@ -60,4 +61,15 @@ function startTimer() {
     };
 };
 // 초기화는 어떻게 할까?
+// 버튼을 추가하면 되겠지?
+// timerInterval을 어떻게 외부로 빼낼수 있을까?
+function resetTimer() {
+    timeLeft = 25 * 60;
+    startStopButton.textContent = 'Start';
+    clearInterval(timerInterval);
+    timerElement.textContent = "25:00";
+};
+
+
 startStopButton.addEventListener("click", startTimer);
+resetButton.addEventListener("click", resetTimer);
