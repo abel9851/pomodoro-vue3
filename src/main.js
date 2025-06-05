@@ -14,9 +14,41 @@ const timerElement = document.getElementById('timer');
 const startStopButton = document.getElementById('startStopButton');
 
 // 어떻게 표시할건지를 함수로 정의한다.
+// 이 함수는 초가 마이너스가 되어야 움직일 필요가 있으니 거꾸로 말하자면 초를 변경하는 행위가 없다면
+// 호출하지 않아도 된다.
 function updateDisplay() {
     const seconds = timeLeft % 60;
     const minutes = Math.floor(timeLeft / 60);
     timerElement.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
+function minusSeconds() {
+    timeLeft--; // 초가 0보다 작은지, 아닌지를 떠나서 무조건 -1을 하니까 좋지 않다. 이미 0인 초에 -를 하는 경우도 있기 때문이다.
+    if (timeLeft < 0) {
+        clearInterval(); // 이상태에서 어떻게 setInterval을 지우지?
+        isRunning = false;
+        startStopButton.textContent = 'Start';
+    } ;
+    updateDisplay();
+    startStopButton.textContent = 'Stop';
+};
+
+// isRunning이 작동되는 것은 알겠어.
+// 근데 왜 이게 필요하지?
+// on/off를 하는 용도야.
+// isRunning이 없을 때는? 버튼 한번 누를 때마다 버튼의 행위를 기억해야해. 버튼이 0인지 1인지. 버튼을 눌러서 1이 되었다. 다음 누를때 1이었다면 0으로 바꾸고
+// 멈추게 하고, 다시 또 버튼을 누르면 1로 바꾸고 움직이게 하고.
+function startTimer() {
+    if (!isRunning) {
+        isRunning = true;
+        timerInterval = setInterval(
+            minusSeconds, 1000
+        ); // 함수를 호출한 다음에 할당해도 되는구나. Timeout객체가 반환된다.
+    } else {
+        clearInterval(timerInterval); // 반환된 
+        isRunning = false;
+        startStopButton.textContent = 'Start';
+    };
+};
+
+startStopButton.addEventListener("click", startTimer);
