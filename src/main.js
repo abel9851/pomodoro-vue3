@@ -41,8 +41,17 @@ function minusSeconds() {
 function startTimer() {
     if (!isRunning) {
         isRunning = true;
-        timerInterval = setInterval(
-            minusSeconds, 1000
+        startStopButton.textContent = 'Stop';
+        timerInterval = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft --;
+                updateDisplay();
+            } else {
+                clearInterval(timerInterval);
+                isRunning = false;
+                startStopButton.textContent = 'Start';
+            };
+        }, 1000
         ); // 함수를 호출한 다음에 할당해도 되는구나. Timeout객체가 반환된다.
     } else {
         clearInterval(timerInterval); // 반환된 
@@ -50,5 +59,5 @@ function startTimer() {
         startStopButton.textContent = 'Start';
     };
 };
-
+// 초기화는 어떻게 할까?
 startStopButton.addEventListener("click", startTimer);
